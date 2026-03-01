@@ -5,8 +5,14 @@ ARG DATABASE_URL
 
 WORKDIR /calcom
 
-RUN set -eux;
-RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3
+RUN set -eux; \
+    apk add --no-cache \
+      build-base \
+      python3 \
+      pkgconfig \
+      vips-dev \
+      libc6-compat \
+    && ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3 || true
 
 ENV NODE_ENV="production"
 ENV NODE_OPTIONS="--max-old-space-size=8192"
