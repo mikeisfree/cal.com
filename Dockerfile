@@ -85,7 +85,7 @@ FROM node:20 AS runner
 WORKDIR /calcom
 
 # Install only runtime dependencies (netcat for health check)
-RUN apt-get update && apt-get install -y --no-install-recommends netcat-openbsd wget && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential python3
 
 # Copy from the previous stages, only necessary files for production
 COPY --from=builder-two /calcom ./
