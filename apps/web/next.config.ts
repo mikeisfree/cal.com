@@ -47,8 +47,12 @@ function adjustEnvVariables(): void {
 
 adjustEnvVariables();
 
-if (!process.env.NEXTAUTH_SECRET) throw new Error("Please set NEXTAUTH_SECRET");
-if (!process.env.CALENDSO_ENCRYPTION_KEY) throw new Error("Please set CALENDSO_ENCRYPTION_KEY");
+const isBuildPhase = process.env.NEXT_PHASE === "phase-production-build";
+
+if (!isBuildPhase) {
+  if (!process.env.NEXTAUTH_SECRET) throw new Error("Please set NEXTAUTH_SECRET");
+  if (!process.env.CALENDSO_ENCRYPTION_KEY) throw new Error("Please set CALENDSO_ENCRYPTION_KEY");
+}
 
 const isOrganizationsEnabled =
   process.env.ORGANIZATIONS_ENABLED === "1" || process.env.ORGANIZATIONS_ENABLED === "true";
@@ -91,7 +95,7 @@ if (!process.env.EMAIL_FROM) {
   );
 }
 
-if (!process.env.NEXTAUTH_URL) throw new Error("Please set NEXTAUTH_URL");
+if (!isBuildPhase && !process.env.NEXTAUTH_URL) throw new Error("Please set NEXTAUTH_URL");
 
 function getHttpsUrl(url: string | undefined): string | undefined {
   if (!url) return url;
